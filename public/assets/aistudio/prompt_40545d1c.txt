@@ -1,0 +1,110 @@
+I need to completely overhaul the "Auto-Inject" feature and the data architecture of this mockup. 
+
+Currently, when I paste JSON data into the Inject Data toolbar, only a few things update (like the hero headline and menu items). But the rest of the page—the Menu Heading, Gallery Heading, About Section, Contact Section, and Footer—are still hardcoded to "Grandma's Recipes." 
+
+I need to make **EVERY SINGLE PIECE OF TEXT** dynamic, driven entirely by the `window.__CONTENT__` object. 
+
+⚠️ CRITICAL RULES:
+- DO NOT break the cart, PDF generation, Stripe checkout, or the existing visual design.
+- ONLY update the HTML IDs, the `window.__CONTENT__` schema, the `renderAll()` function, and the Injector UI.
+
+### 1. UPDATE THE HTML TO USE IDs
+Find every hardcoded text element in the HTML and add these specific IDs:
+
+- **Hero Section:** `id="hero-headline"`, `id="hero-sub"`
+- **Menu Section:** `id="menu-heading"`, `id="menu-sub"`
+- **Gallery Section:** `id="gallery-heading"`, `id="gallery-sub"`
+- **About Section:** `id="about-heading"`, `id="about-body-1"`, `id="about-body-2"`
+- **Contact Section:** `id="contact-heading"`, `id="contact-sub"`
+- **Pre-Order Section:** `id="order-heading"`, `id="order-sub"`
+- **Catering Section:** `id="catering-heading"`, `id="catering-sub"`
+- **Footer:** `id="footer-tagline"`, `id="footer-copyright"`
+
+### 2. UPDATE THE `window.__CONTENT__` SCHEMA
+Add these new keys to the `window.__CONTENT__` object (keep the existing defaults):
+
+```javascript
+{
+  "menuHeading": "Fresh from Grandma's Kitchen",
+  "menuSub": "Four types of gourmet cookies...",
+  "galleryHeading": "Straight from Grandma's Kitchen",
+  "gallerySub": "A look at our cookies, dips...",
+  "aboutHeading": "About Grandma's Recipes",
+  "aboutBody1": "Welcome to our little kitchen!...",
+  "aboutBody2": "Our recent drops include...",
+  "contactHeading": "Contact",
+  "contactSub": "Local pop-ups and pre-order pickups across New York.",
+  "orderHeading": "Pre-order for pickup",
+  "orderSub": "Place your pre-order directly...",
+  "cateringHeading": "Catering & events",
+  "cateringSub": "Planning a party or a pop-up of your own?...",
+  "footerTagline": "© 2026 Grandma Recipes. Homemade Cookies & Cream Cheese Dips. New York, NY. 🍪❤️",
+  "footerCopyright": "© 2026 Grandma's Recipes. All rights reserved."
+}
+
+3. UPDATE renderAll() TO POPULATE THE IDs
+Inside the renderAll() function, add lines to populate these new IDs from the window.__CONTENT__ object. Use a helper function or direct DOM selection, for example:
+
+document.getElementById('menu-heading').textContent = C.menuHeading;
+document.getElementById('menu-sub').textContent = C.menuSub;
+document.getElementById('gallery-heading').textContent = C.galleryHeading;
+document.getElementById('gallery-sub').textContent = C.gallerySub;
+document.getElementById('about-heading').textContent = C.aboutHeading;
+document.getElementById('about-body-1').textContent = C.aboutBody1;
+document.getElementById('about-body-2').textContent = C.aboutBody2;
+document.getElementById('contact-heading').textContent = C.contactHeading;
+document.getElementById('contact-sub').textContent = C.contactSub;
+document.getElementById('order-heading').textContent = C.orderHeading;
+document.getElementById('order-sub').textContent = C.orderSub;
+document.getElementById('catering-heading').textContent = C.cateringHeading;
+document.getElementById('catering-sub').textContent = C.cateringSub;
+document.getElementById('footer-tagline').textContent = C.footerTagline;
+document.getElementById('footer-copyright').textContent = C.footerCopyright;
+
+(Ensure C is the reference to window.__CONTENT__).
+
+4. UPDATE THE INJECTOR LOGIC
+The injector already does Object.assign(window.__CONTENT__, parsedData). Because renderAll() now updates every heading, the page will completely transform on injection.
+
+5. ADD A "COPY FULL JSON" EXAMPLE TO THE TOOLBAR
+Inside the Inject Data toolbar (#inject-json-toolbar), add a new button next to "⚡ Inject Data":
+
+Label: "📋 Copy Full JSON Example"
+
+On click, copy this exact JSON to the clipboard so I can see how to format a full restaurant injection:
+
+{
+  "name": "Nonna's Trattoria",
+  "heroHeadline": "Authentic Sicilian Recipes",
+  "heroSub": "Wood-fired pizzas and ricotta-filled cannoli, crafted fresh every morning in Little Italy.",
+  "menuHeading": "Our Wood-Fired Specialties",
+  "menuSub": "Crafted in our 900-degree oven, just like Nonna used to make.",
+  "galleryHeading": "A Taste of Palermo",
+  "gallerySub": "Fresh from our kitchen to your table.",
+  "aboutHeading": "Since 1985",
+  "aboutBody1": "For three generations, the Rossi family has brought the authentic taste of Sicily to Cleveland.",
+  "aboutBody2": "Every cannolo is hand-filled to order, and every pizza is stretched by hand.",
+  "contactHeading": "Visit Us in Little Italy",
+  "contactSub": "Find us at 1234 Little Italy Blvd, open 7 days a week.",
+  "orderHeading": "Order for Pickup",
+  "orderSub": "Skip the delivery apps and keep 100% of your money.",
+  "cateringHeading": "Catering & Events",
+  "cateringSub": "We cater weddings, corporate events, and private parties.",
+  "footerTagline": "© 2026 Nonna's Trattoria. Handmade with love in Cleveland.",
+  "footerCopyright": "© 2026 Nonna's Trattoria. All rights reserved."
+}
+
+6. VERIFY THE FULL FLOW
+After these updates, when I paste the example JSON into the Inject Data textarea and click Inject Data:
+
+The Hero should update.
+
+The Menu Heading should say "Our Wood-Fired Specialties".
+
+The About Heading should say "Since 1985".
+
+The Contact Heading should say "Visit Us in Little Italy".
+
+The Footer should say "© 2026 Nonna's Trattoria".
+
+Output the complete updated HTML file.

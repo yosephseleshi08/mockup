@@ -1,0 +1,6 @@
+{
+  "summary":  "Implementation plan for diagnosing and fixing the 6 reported regressions in Grandma's Recipes direct ordering app: baking live text and image edits into clean export, authentic thermal PDF reservation ticket, removing export toast text, restoring the bottom Owner Dashboard button on receipts, and ensuring the kitchen ticket modal download button downloads the kitchen order ticket instead of the customer receipt.",
+  "updatedAt":  "2026-11-01T12:28:35.674069981Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

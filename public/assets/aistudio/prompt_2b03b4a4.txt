@@ -1,0 +1,33 @@
+We are 99% done. The data injection is working, but there are 3 hardcoded elements left that the AI missed. They still say "Grandma's Recipes" no matter what data is injected. 
+
+⚠️ CRITICAL RULES:
+- DO NOT break any existing working functionality.
+- ONLY fix the 3 specific elements below.
+
+### 1. FIX THE STATS BAR
+In the HTML, find the stats section (the black bar with "4 Cookie Recipes", "7 Cream Cheese Dips", "0% Commission"). 
+Give them IDs: `id="stat1-value"`, `id="stat1Label"`, `id="stat2-value"`, `id="stat2Label"`, `id="stat3-value"`, `id="stat3Label"`.
+In `window.__CONTENT__`, add the defaults:
+```javascript
+"stat1Value": "4 Cookie Recipes", "stat1Label": "Gourmet, homemade",
+"stat2Value": "7 Cream Cheese Dips", "stat2Label": "Easy homestyle classics",
+"stat3Value": "0% Commission", "stat3Label": "Keep 100% of profits"
+In renderAll(), add:
+if ($("stat1-value")) $("stat1-value").textContent = C.stat1Value;
+if ($("stat1Label")) $("stat1Label").textContent = C.stat1Label;
+if ($("stat2-value")) $("stat2-value").textContent = C.stat2Value;
+if ($("stat2Label")) $("stat2Label").textContent = C.stat2Label;
+if ($("stat3-value")) $("stat3-value").textContent = C.stat3Value;
+if ($("stat3Label")) $("stat3Label").textContent = C.stat3Label;
+2. FIX THE MENU CATEGORY HEADERS
+Currently, the menu cards are updating with new items, but the category header still says "Four Types of Gourmet Cookies".
+
+In renderMenu(), ensure the category name from the JSON is rendered in the <h3> tag:
+'<h3>' + esc(cat.name) + '</h3>'(Check that this is actually happening. If not, update the menuCategories mapping to use cat.name from the JSON).
+
+3. FIX THE FOOTER BRAND NAME
+The footer has a hardcoded <h4> that says "Grandma's Recipes" above the copyright.
+Give it the ID id="footer-name".
+In renderAll(), add:
+if ($("footer-name")) $("footer-name").textContent = C.name;
+Output the complete updated HTML file. No other changes.

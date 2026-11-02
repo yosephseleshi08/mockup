@@ -1,0 +1,45 @@
+We are 99% done, but there are 5 hardcoded elements left that are not updating during injection. They are the Logo Text, Hero Image, CTA Section, Gallery Images, and Testimonials. 
+
+⚠️ CRITICAL RULES:
+- DO NOT break anything that is currently working.
+- ONLY fix these 5 elements to be fully dynamic.
+
+### 1. FIX THE HEADER LOGO TEXT
+In the HTML, find the logo text element (the top left logo that says "Grandma's Recipes"). Give it the ID `id="brand-text"` (if it doesn't already have it).
+In `renderAll()`, add:
+```javascript
+if ($("brand-text")) $("brand-text").textContent = C.logoText || C.name;
+2. FIX THE HERO IMAGE
+In the HTML, find the hero background image. It should already have id="hero-img".
+In renderAll(), ensure it pulls from C.heroImage:
+if ($("hero-img") && C.heroImage) $("hero-img").src = C.heroImage;
+3. FIX THE CTA SECTION (Craving Something Homemade?)
+In the HTML, find the CTA section at the bottom. Add IDs to the headline and subtext: id="cta-heading" and id="cta-sub".
+In window.__CONTENT__, add:
+"ctaHeading": "Craving Something Homemade?",
+"ctaSub": "Don't miss out on our small-batch drops. Pre-order cookies & dips direct with 0% commission fees!",
+"ctaBtn": "Pre-Order Direct Now"
+In renderAll(), add:
+if ($("cta-heading")) $("cta-heading").textContent = C.ctaHeading;
+if ($("cta-sub")) $("cta-sub").textContent = C.ctaSub;
+if ($("cta-btn")) $("cta-btn").textContent = C.ctaBtn;
+4. FIX THE GALLERY IMAGES
+In renderGallery(), ensure it dynamically renders from C.gallery (not hardcoded images).
+function renderGallery() {
+  var host = $("gallery-grid"); if (!host) return;
+  if (!C.gallery || !C.gallery.length) return; // fallback
+  host.innerHTML = C.gallery.map(function(g) {
+    return '<div class="gallery-item"><img src="' + g.image + '" alt="' + (g.alt || "Gallery image") + '"></div>';
+  }).join("");
+}5. FIX THE TESTIMONIALS
+In renderTestimonials(), ensure it dynamically renders from C.testimonials.
+function renderTestimonials() {
+  var host = $("testi-track"); if (!host) return;
+  if (!C.testimonials || !C.testimonials.length) return;
+  host.innerHTML = C.testimonials.map(function(t, idx) {
+    return '<div class="testi ' + (idx === 0 ? 'active' : '') + '">' +
+      '<blockquote>"' + t.quote + '"</blockquote>' +
+      '<cite>— ' + t.name + ', ' + t.context + '</cite></div>';
+  }).join("");
+}
+Output the complete updated HTML file.

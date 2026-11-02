@@ -1,0 +1,6 @@
+{
+  "name": "Grandma's Recipes — 0% Commission Direct Ordering",
+  "description": "Grandma's Recipes: Commission-free direct ordering with instant kitchen ticket, customer receipt, and owner dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
